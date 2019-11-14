@@ -6,7 +6,7 @@
   height: 40vmin;
 }
 
-.App-header {
+.App {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -19,4 +19,62 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.github-links {
+  
+}
+
+.new-quote-container {
+  background: #000;
+  padding: 5px 2px;
+  position: relative;
+  width: 265px;
+  margin: 30px auto;
+  transform: scale(1.5) translateY(20px);
+}
+
+.new-quote {
+  background: #ffffff;
+  font-size: 3rem;
+  height: 168px;
+  color: #000;
+  white-space: pre-line;
+  font-family: 'Pathway Gothic One';
+  letter-spacing: 9px;
+}
+
+.new-quote:after, .new-quote:before {
+  content: '';
+  display: block;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  background: #000;
+  height: 5px;
+}
+
+.new-quote:after {
+  top: 32%;
+}
+
+.new-quote:before {
+  top: 66%;
+}
+
+input[type="text"] {
+  padding: 11px 10px;
+  font-size: 1rem;
+  margin-left: 10px;
+  border: 0;
+}
+
+input[type="submit"] {
+  border: 0;
+  background: #09d3ac;
+  box-shadow: none;
+  border-radius: 0px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: bold;
 }
