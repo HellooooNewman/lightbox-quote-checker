@@ -23,10 +23,6 @@ class QuoteForm extends React.Component {
   }
 
   checkSentence(message) {
-    if(message === "") {
-      this.setState({error: `${errorTemplate} Please add some text.`});
-      return; 
-    }
     let alteredMessage = "";
     let errorTemplate = "❌🙃 ";
     const recommendAlternativeCharacters = true;
@@ -124,6 +120,11 @@ class QuoteForm extends React.Component {
     if (showCharacters) {
         console.log("Characters:");
         return console.log(characters);
+    }
+
+    if(message === "") {
+      this.setState({error: `${errorTemplate} Please add some text.`});
+      return; 
     }
 
     // Check to see if its longer than all available options

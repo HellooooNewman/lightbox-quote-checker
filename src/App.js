@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './images/lightbox.jpg';
 import QuoteForm from './QuoteForm';
 import './App.css';
 
