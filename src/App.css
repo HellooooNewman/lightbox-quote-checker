@@ -1,3 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #282c34;
+}
+
+:root {
+  --main-color: #09d3ac;
+}
+
+h1 {
+  font-family: 'Pathway Gothic One';
+  text-transform: uppercase;
+  letter-spacing: 10px;
+}
+
 .App {
   text-align: center;
 }
@@ -7,7 +25,6 @@
 }
 
 .App {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,11 +35,7 @@
 }
 
 .App-link {
-  color: #09d3ac;
-}
-
-.github-links {
-  
+  color: var(--main-color);
 }
 
 .new-quote-container {
@@ -30,7 +43,7 @@
   padding: 5px 2px;
   position: relative;
   width: 265px;
-  margin: 30px auto;
+  margin: 30px auto 100px;
   transform: scale(1.5) translateY(20px);
 }
 
@@ -71,10 +84,53 @@ input[type="text"] {
 
 input[type="submit"] {
   border: 0;
-  background: #09d3ac;
+  background: var(--main-color);
   box-shadow: none;
   border-radius: 0px;
   padding: 11px;
   font-size: 1rem;
   font-weight: bold;
+}
+
+.input-toggles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-toggles label {
+  display: flex;
+  margin-top: 15px;
+}
+
+.input-toggles .react-toggle + span {
+  margin-left: 15px;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track, .react-toggle--checked .react-toggle-track {
+  background-color: var(--main-color);
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  border-color: var(--main-color);
+}
+
+li {
+  list-style-type: none;
+}
+
+.character-list {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 0px 36px 36px;
+}
+
+.character-list li {
+  width: 80px;
+}
+
+.character-list li strong {
+  width: 48px;
+  display: inline-block;
 }

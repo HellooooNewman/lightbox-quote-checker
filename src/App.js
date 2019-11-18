@@ -1,17 +1,29 @@
 import React from 'react';
 import QuoteForm from './QuoteForm';
+import "react-toggle/style.css";
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <h1>
           Lightbox Quote Checker
         </h1>
-        <QuoteForm />
+      </header>
+      <QuoteForm />
         <br></br>
+        <p>
+          Based on this <a
+            className="App-link"
+            href="https://www.amazon.ca/Original-My-Cinema-Lightbox-characters/dp/B0167XQQHO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >lightbox
+        </a>
+        </p>
+        
+        
         <br></br>
         <div className="github-links">
           <a
@@ -32,9 +44,6 @@ function App() {
             Lightbox Quote Checker FE Repo
           </a>
         </div>
-      </header>
-      
-      
     </div>
   );
 }

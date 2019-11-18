@@ -1,16 +1,40 @@
 import React from 'react';
+import {characters, replacementCharacters} from './characters';
+import Toggle from 'react-toggle';
 
 class QuoteForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 'create words to live by',
+      value: 'Create words to live by',
       error: '',
       newQuote: '',
+      characters: characters,
+      replacementCharacters: replacementCharacters,
+      showCharacters: false,
+      showReplacementCharacters: false,
+      recommendAlternativeCharacters: true,
     };
+
+    this.charactersDiv = Object.entries(this.state.characters).map(([key, value]) => {
+        return <li key={key}><strong>{key}:</strong> {value}</li>;
+    });
+    this.replacementCharactersDiv = Object.entries(this.state.replacementCharacters).map(([key, value]) => {
+        return <li key={key}><strong>{key} =</strong> {value}</li>;
+    });
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  toggleShowCharacters = () => {
+    this.setState({showCharacters: !this.state.showCharacters});
+  }
+  toggleShowReplacementCharacters = () => {
+    this.setState({showReplacementCharacters: !this.state.showReplacementCharacters});
+  }
+  toggleRecommendAlternativeCharacters = () => {
+    this.setState({recommendAlternativeCharacters: !this.state.recommendAlternativeCharacters});
   }
 
   handleChange(event) {
@@ -22,105 +46,11 @@ class QuoteForm extends React.Component {
     event.preventDefault();
   }
 
-  checkSentence(message) {
+  checkSentence = (message) => {
     let alteredMessage = "";
     let errorTemplate = "❌🙃 ";
-    const recommendAlternativeCharacters = true;
-    const showCharacters = false;
-    const showReplacementCharacters = false;
-    const characters = {
-        A: 3,
-        B: 1,
-        C: 2,
-        D: 2,
-        E: 3,
-        F: 1,
-        G: 2,
-        H: 2,
-        I: 3,
-        J: 1,
-        K: 1,
-        L: 2,
-        M: 2,
-        N: 2,
-        O: 3,
-        P: 2,
-        Q: 1,
-        R: 3,
-        S: 2,
-        T: 2,
-        U: 2,
-        V: 1,
-        W: 1,
-        X: 1,
-        Y: 1,
-        Z: 1,
-        "1": 1,
-        "2": 1,
-        "3": 1,
-        "4": 1,
-        "5": 1,
-        "6": 1,
-        "7": 1,
-        "8": 1,
-        "9": 1,
-        "0": 1,
-        "@": 1,
-        "#": 1,
-        "&": 1
-    };
-
-    const replacementCharacters = {
-        A: [],
-        B: [],
-        C: ["U"],
-        D: [],
-        E: ["3"],
-        F: [],
-        G: [],
-        H: [],
-        I: ["1"],
-        J: [],
-        K: [],
-        L: [],
-        M: ["W"],
-        N: [],
-        O: ["0"],
-        P: [],
-        Q: [],
-        R: 3,
-        S: ["S"],
-        T: [],
-        U: ["C"],
-        V: [],
-        W: ["M"],
-        X: [],
-        Y: [],
-        Z: ["Z"],
-        "1": ["I"],
-        "2": ["S"],
-        "3": ["E"],
-        "4": [],
-        "5": [],
-        "6": ["9"],
-        "7": [],
-        "8": [],
-        "9": ["6"],
-        "0": ["O"],
-        "@": [],
-        "#": [],
-        "&": []
-    };
-
-    if (showReplacementCharacters) {
-        console.log("Replacement Characters:");
-        return console.log(replacementCharacters);
-    }
-
-    if (showCharacters) {
-        console.log("Characters:");
-        return console.log(characters);
-    }
+    const _characters = characters;
+    const _replacementCharacters = replacementCharacters;
 
     if(message === "") {
       this.setState({error: `${errorTemplate} Please add some text.`});
@@ -128,27 +58,25 @@ class QuoteForm extends React.Component {
     }
 
     // Check to see if its longer than all available options
-    const checkLength = checkLengthFn();
-    function checkLengthFn() {
-        const charactersLength = Object.values(characters).reduce(
+    const checkLength = () => {
+        const charactersLength = Object.values(_characters).reduce(
             (t, value) => t + value
         );
         const messageLength = message.replace(" ", "").length;
         return charactersLength > messageLength;
     }
-    if (!checkLength) {
+    if (!checkLength()) {
         this.setState({error: `${errorTemplate} Quote is too long.`});
         return;
     }
 
     // Check to see if there's any random characters that aren't supported
-    const checkForNotSupportedCharacters = checkForNotSupportedCharactersFn();
-    function checkForNotSupportedCharactersFn() {
+    const checkForNotSupportedCharacters = () => {
         const validRegex = /^[a-zA-Z0-9&#@\s]+$/gi;
         return validRegex.test(message);
     }
 
-    if (!checkForNotSupportedCharacters) {
+    if (!checkForNotSupportedCharacters()) {
         this.setState({error: `${errorTemplate} Unsupported characters in quote.`});
         return;
     }
@@ -164,18 +92,16 @@ class QuoteForm extends React.Component {
       return;
     }
 
-    const checkForEnoughCharacters = checkForEnoughCharactersFn();
-    function checkForEnoughCharactersFn() {
+    const checkForEnoughCharacters = () => {
         let messageLetters = message.toUpperCase().split("");
-        let charactersUsed = characters;
+        let charactersUsed = {..._characters};
         let notEnoughCharacters = [];
         for (let letter of messageLetters) {
-            // letter
             if (charactersUsed[letter] === 0) {
-                if (recommendAlternativeCharacters) {
-                    if (replacementCharacters[letter].length !== 0 && charactersUsed[replacementCharacters[letter][0]] !== 0) {
-                        alteredMessage += replacementCharacters[letter][0];
-                        charactersUsed[replacementCharacters[letter][0]]--;
+                if (this.state.recommendAlternativeCharacters) {
+                    if (_replacementCharacters[letter] !== undefined && _replacementCharacters[letter].length !== 0 && charactersUsed[_replacementCharacters[letter][0]] !== 0) {
+                        alteredMessage += _replacementCharacters[letter][0];
+                        charactersUsed[_replacementCharacters[letter][0]]--;
                     } else {
                         notEnoughCharacters.push(letter);
                     }
@@ -193,8 +119,8 @@ class QuoteForm extends React.Component {
         return notEnoughCharacters;
     }
 
-    if (checkForEnoughCharacters.length !== 0) {
-      this.setState({error: `${errorTemplate} You're missing a few characters: Here's a list: <strong>${checkForEnoughCharacters}</strong>. Please try to be more creative.`});
+    if (checkForEnoughCharacters().length !== 0) {
+      this.setState({error: `${errorTemplate} You're missing a few characters: Here's a list: <strong>${checkForEnoughCharacters()}</strong>. Please try to be more creative.`});
       return
     }
 
@@ -214,18 +140,62 @@ class QuoteForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <label>
           Quote Here:
-          <input placeholder="The future is here" type="text" value={this.state.value} onChange={this.handleChange} />
+          <input placeholder="Your quote here" type="text" id="quotetext" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
-        <div dangerouslySetInnerHTML={{ __html: this.state.error}}></div>
+        <div className="input-toggles">
+          <label>
+            <Toggle
+              defaultChecked={this.state.showCharacters}
+              icons={false}
+              onChange={this.toggleShowCharacters} />
+            <span>Show Character List</span>
+          </label>
+          <label>
+            <Toggle
+              defaultChecked={this.state.showReplacementCharacters}
+              icons={false}
+              onChange={this.toggleShowReplacementCharacters} />
+            <span>Show Alternative Characters List</span>
+          </label>
+          <label>
+            <Toggle
+              defaultChecked={this.state.recommendAlternativeCharacters}
+              icons={false}
+              onChange={this.toggleRecommendAlternativeCharacters} />
+            <span>Use Alternative Characters in Quote</span>
+          </label>
+        </div>
+        <div className="error" dangerouslySetInnerHTML={{ __html: this.state.error}}></div>
         <br></br>
-        <div class="new-quote-container">
+        <div className="new-quote-container">
           <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote}}></div>
         </div>
-        
+          { 
+            this.state.showCharacters ? 
+            <div>
+              <p>Count of each character available.</p>
+              <div className="character-list">
+                {this.charactersDiv}
+              </div>
+            </div>
+            : null
+          }
+          { 
+            this.state.showReplacementCharacters ? 
+            <div>
+              <p>List of character replacements for each letter</p>
+              <div className="character-list">
+                {this.replacementCharactersDiv}
+              </div>
+            </div>
+            : null
+          }
       </form>
     );
   }
 }
+
+
 
 export default QuoteForm;
