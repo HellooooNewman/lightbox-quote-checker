@@ -13,17 +13,6 @@ function App() {
       </header>
       <QuoteForm />
         <br></br>
-        <p>
-          Based on this <a
-            className="App-link"
-            href="https://www.amazon.ca/Original-My-Cinema-Lightbox-characters/dp/B0167XQQHO"
-            target="_blank"
-            rel="noopener noreferrer"
-          >lightbox
-        </a>
-        </p>
-        
-        
         <br></br>
         <div className="github-links">
           <a
@@ -32,16 +21,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Lightbox Quote Checker Slack Bot Repo
-          </a>
-          <br></br>
-          <a
-            className="App-link"
-            href="https://github.com/HellooooNewman/Lightbox-Quote-Checker-FE"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Lightbox Quote Checker FE Repo
+            Slack Bot Version
           </a>
         </div>
     </div>

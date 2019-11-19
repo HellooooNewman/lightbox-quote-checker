@@ -146,6 +146,21 @@ class QuoteForm extends React.Component {
         <div className="input-toggles">
           <label>
             <Toggle
+              defaultChecked={this.state.recommendAlternativeCharacters}
+              icons={false}
+              onChange={this.toggleRecommendAlternativeCharacters} />
+            <span>Use Alternative Characters in Quote ex: E = 3</span>
+          </label>
+        </div>
+        <div className="error" dangerouslySetInnerHTML={{ __html: this.state.error}}></div>
+        <br></br>
+        <div className="new-quote-container">
+          <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote}}></div>
+        </div>
+          
+        <div className="input-toggles">
+          <label>
+            <Toggle
               defaultChecked={this.state.showCharacters}
               icons={false}
               onChange={this.toggleShowCharacters} />
@@ -158,23 +173,10 @@ class QuoteForm extends React.Component {
               onChange={this.toggleShowReplacementCharacters} />
             <span>Show Alternative Characters List</span>
           </label>
-          <label>
-            <Toggle
-              defaultChecked={this.state.recommendAlternativeCharacters}
-              icons={false}
-              onChange={this.toggleRecommendAlternativeCharacters} />
-            <span>Use Alternative Characters in Quote</span>
-          </label>
-        </div>
-        <div className="error" dangerouslySetInnerHTML={{ __html: this.state.error}}></div>
-        <br></br>
-        <div className="new-quote-container">
-          <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote}}></div>
-        </div>
           { 
             this.state.showCharacters ? 
             <div>
-              <p>Count of each character available.</p>
+              <p>Count of each character available</p>
               <div className="character-list">
                 {this.charactersDiv}
               </div>
@@ -191,6 +193,7 @@ class QuoteForm extends React.Component {
             </div>
             : null
           }
+        </div>
       </form>
     );
   }

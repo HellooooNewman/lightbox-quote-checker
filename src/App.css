@@ -127,10 +127,9 @@ li {
 }
 
 .character-list li {
-  width: 80px;
+  margin-right: 20px;
 }
 
 .character-list li strong {
-  width: 48px;
   display: inline-block;
 }
