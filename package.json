@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://kevinnewman.ca/lightbox-quote-checker",
   "dependencies": {
+    "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",

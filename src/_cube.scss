@@ -1,0 +1,90 @@
+.cube{
+  width: 300px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(-100px);
+  transition: transform 1s;
+
+  &__face {
+    position: absolute;
+    border: 2px solid #0e0e0e;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+
+    &--front  { 
+      transform: rotateY(0deg) translateZ(50px);
+      width: 300px;
+      height: 200px;
+      background: #dedede;
+      transition: 0.1s;
+    }
+    
+    &--light-on {
+      background: #fff;
+      box-shadow: 
+        0px 2px 10px rgba(255,255,255,0.3),
+        0px 5px 72px rgba(255,255,255,0.3),
+        0px 7px 48px rgba(255,255,255,0.3),
+        0px 8px 8px rgba(255,255,255,0.3);
+    }
+    &--right  { 
+      background: #0e0e0e;
+      transform: rotateY(90deg) translateZ(50px);
+      width: 100px;
+      height: 200px;
+      left: 200px;
+    }
+    &--top    { 
+      background: #0e0e0e;
+      transform: rotateX(90deg) translateZ(150px);
+      width: 300px;
+      height: 100px;
+      top: 100px;
+    }
+  }
+  &--rotate {
+    transform: rotateY(-18deg) rotateX(-8deg);
+  }
+}
+
+.scene-cube {
+  perspective: 1000px;
+}
+
+.new-quote-container {
+  background: #0e0e0e;
+  padding: 5px 2px;
+  position: relative;
+  width: 265px;
+  margin: 30px auto 100px;
+  transform: scale(1.5) translateY(20px);
+}
+
+.new-quote {
+  background: #ffffff;
+  font-size: 3.6rem;
+  color: #0e0e0e;
+  // white-space: pre-line;
+  font-family: 'Pathway Gothic One';
+  letter-spacing: 9px;
+}
+
+.new-quote:after, .new-quote:before {
+  content: '';
+  display: block;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  background: #0e0e0e;
+  height: 5px;
+}
+
+.new-quote:after {
+  top: 32%;
+}
+
+.new-quote:before {
+  top: 66%;
+}

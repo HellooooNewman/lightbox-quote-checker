@@ -1,7 +1,7 @@
 import React from 'react';
 import QuoteForm from './QuoteForm';
 import "react-toggle/style.css";
-import './App.css';
+import './App.scss';
 
 function App() {
   return (

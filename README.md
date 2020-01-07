@@ -14,6 +14,8 @@ Integrates into Slack as a bot [Here](https://github.com/HellooooNewman/Lightbox
 - Invalid character check (A-Z, 0-9, #&@)
 - Word length check(Max 10 letters per word)
 - Too many line breaks in the sentence(Max 3 line breaks)
+- Make 3D
+- Turn light on
 
 ## Installation
 `npm i && npm start`
@@ -40,3 +42,9 @@ Doesn't work
 ``` 
 Unsupported characters in quote.
 ```
+
+## Planned Features:
+- Edit length of rows
+- Edit number of rows
+- Edit character count
+- Changing light color

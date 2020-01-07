@@ -14,6 +14,8 @@ class QuoteForm extends React.Component {
       showCharacters: false,
       showReplacementCharacters: false,
       recommendAlternativeCharacters: true,
+      toggle3D: false,
+      toggleLight: false,
     };
 
     this.charactersDiv = Object.entries(this.state.characters).map(([key, value]) => {
@@ -33,8 +35,11 @@ class QuoteForm extends React.Component {
   toggleShowReplacementCharacters = () => {
     this.setState({showReplacementCharacters: !this.state.showReplacementCharacters});
   }
-  toggleRecommendAlternativeCharacters = () => {
-    this.setState({recommendAlternativeCharacters: !this.state.recommendAlternativeCharacters});
+  toggle3D = () => {
+    this.setState({toggle3D: !this.state.toggle3D});
+  }
+  toggleLight = () => {
+    this.setState({toggleLight: !this.state.toggleLight});
   }
 
   handleChange(event) {
@@ -151,11 +156,31 @@ class QuoteForm extends React.Component {
               onChange={this.toggleRecommendAlternativeCharacters} />
             <span>Use Alternative Characters in Quote ex: E = 3</span>
           </label>
+          <label>
+            <Toggle
+              defaultChecked={this.state.toggle3D}
+              icons={false}
+              onChange={this.toggle3D} />
+            <span>Toggle 3D</span>
+          </label>
+          <label>
+            <Toggle
+              defaultChecked={this.state.toggleLight}
+              icons={false}
+              onChange={this.toggleLight} />
+            <span>Toggle Light</span>
+          </label>
         </div>
         <div className="error" dangerouslySetInnerHTML={{ __html: this.state.error}}></div>
         <br></br>
-        <div className="new-quote-container">
-          <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote}}></div>
+        <div className="scene scene--cube">
+          <div className={`cube ${this.state.toggle3D ? 'cube--rotate' : ''}`}>
+            <div className={`cube__face cube__face--front ${this.state.toggleLight ? 'cube__face--light-on' : ''}`}>
+              <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote}}></div>
+            </div>
+            <div className="cube__face cube__face--right"></div>
+            <div className="cube__face cube__face--top"></div>
+          </div>
         </div>
           
         <div className="input-toggles">

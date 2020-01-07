@@ -38,43 +38,6 @@ h1 {
   color: var(--main-color);
 }
 
-.new-quote-container {
-  background: #000;
-  padding: 5px 2px;
-  position: relative;
-  width: 265px;
-  margin: 30px auto 100px;
-  transform: scale(1.5) translateY(20px);
-}
-
-.new-quote {
-  background: #ffffff;
-  font-size: 3rem;
-  height: 168px;
-  color: #000;
-  white-space: pre-line;
-  font-family: 'Pathway Gothic One';
-  letter-spacing: 9px;
-}
-
-.new-quote:after, .new-quote:before {
-  content: '';
-  display: block;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  background: #000;
-  height: 5px;
-}
-
-.new-quote:after {
-  top: 32%;
-}
-
-.new-quote:before {
-  top: 66%;
-}
-
 input[type="text"] {
   padding: 11px 10px;
   font-size: 1rem;
@@ -133,3 +96,5 @@ li {
 .character-list li strong {
   display: inline-block;
 }
+
+@import '_cube.scss';
