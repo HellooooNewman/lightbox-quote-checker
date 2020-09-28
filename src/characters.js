@@ -41,6 +41,7 @@ export const characters = {
 };
 
 export const replacementCharacters = {
+  A: ["U"],
   C: ["U"],
   E: ["3"],
   I: ["1"],
