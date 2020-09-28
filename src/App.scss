@@ -11,7 +11,7 @@ body {
 }
 
 h1 {
-  font-family: 'Pathway Gothic One';
+  font-family: "Pathway Gothic One";
   text-transform: uppercase;
   letter-spacing: 10px;
 }
@@ -66,35 +66,45 @@ input[type="submit"] {
   margin-top: 15px;
 }
 
-.input-toggles .react-toggle + span {
-  margin-left: 15px;
-}
-
-.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track, .react-toggle--checked .react-toggle-track {
-  background-color: var(--main-color);
-}
-
-.react-toggle--checked .react-toggle-thumb {
-  border-color: var(--main-color);
-}
-
-li {
-  list-style-type: none;
-}
-
-.character-list {
+.react-toggle {
   display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  padding: 0px 36px 36px;
-}
+  align-items: center;
+  &-- {
+    &checked {
+      &:hover:not(.react-toggle--disabled) .react-toggle-track,
+      .react-toggle-track {
+        background-color: var(--main-color);
+      }
 
-.character-list li {
-  margin-right: 20px;
+      .react-toggle-thumb {
+        border-color: var(--main-color);
+        transform: translateX(-49px) translateY(-1px);
+        left: 0;
+      }
+    }
+  }
+
+  &- {
+    &thumb {
+      position: relative;
+      transform: translateX(-25px) translateY(-1px);
+    }
+  }
+
+  li {
+    list-style-type: none;
+  }
+
+  .character-list {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0px 36px 36px;
+  }
 }
 
 .character-list li strong {
   display: inline-block;
 }
 
-@import '_cube.scss';
+@import "_cube.scss";
