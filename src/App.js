@@ -1,7 +1,7 @@
 import React from 'react';
 import QuoteForm from './QuoteForm';
 import "react-toggle/style.css";
-import './App.scss';
+import './styles/_app.scss';
 
 function App() {
   return (
@@ -12,18 +12,27 @@ function App() {
         </h1>
       </header>
       <QuoteForm />
-        <br></br>
-        <br></br>
-        <div className="github-links">
-          <a
-            className="App-link"
-            href="https://github.com/HellooooNewman/Lightbox-Quote-Checker"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Slack Bot Version
+      <br></br>
+      <br></br>
+      <div className="github-links">
+        <a
+          className="App-link"
+          href="https://github.com/HellooooNewman/Lightbox-Quote-Checker"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Slack Bot Version
           </a>
-        </div>
+        <span> | </span>
+        <a
+          className="App-link"
+          href="https://github.com/HellooooNewman/Lightbox-Quote-Checker-FE/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Github
+          </a>
+      </div>
     </div>
   );
 }

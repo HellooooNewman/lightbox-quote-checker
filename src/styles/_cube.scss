@@ -1,0 +1,112 @@
+.cube {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg) translateZ(0);
+  transition: transform 1s;
+  background: #fff;
+  transition: 0.3s;
+
+  &__face {
+    // border: 2px solid #0e0e0e;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+
+    &--light-on {
+      background: #fff;
+      box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.3), 0px 5px 72px rgba(255, 255, 255, 0.3),
+        0px 7px 48px rgba(255, 255, 255, 0.3), 0px 8px 8px rgba(255, 255, 255, 0.3);
+      height: 100%;
+    }
+    &--right {
+      height: 100%;
+      width: 60px;
+      right: -50px;
+      position: absolute;
+      top: 0;
+      background: #0e0e0e;
+      transform: rotateY(90deg) translate3d(30px, 0px, -20px);
+    }
+    &--top {
+      background: #0e0e0e;
+      transform: rotateX(90deg) translateY(-30px);
+      height: 60px;
+      width: 100%;
+      left: 0px;
+      top: -30px;
+      position: absolute;
+    }
+  }
+  &--rotate {
+    transform: rotateY(-22deg) rotateX(-11deg) rotateZ(4deg);
+  }
+}
+
+.scene {
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.scene-cube {
+  perspective: 1000px;
+}
+
+.new-quote-container {
+  background: #0e0e0e;
+  padding: 5px 2px;
+  position: relative;
+  width: 265px;
+  margin: 30px auto 100px;
+  transform: scale(1.5) translateY(20px);
+}
+
+.new-quote {
+  background: #ffffff;
+  font-size: 3.6rem;
+  color: #0e0e0e;
+  font-family: "Pathway Gothic One";
+  letter-spacing: 9px;
+  &__row {
+    border-bottom: 5px solid #b9b9b9;
+    height: 71px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    &:last-child {
+      height: 66px;
+    }
+    &:last-child {
+      border: none;
+    }
+    span {
+      letter-spacing: 0;
+      width: 40px;
+      height: 66px;
+      display: inline-block;
+    }
+    &__ {
+      &empty-space {
+        &:first-child {
+          display: none;
+        }
+      }
+      &letter {
+        border-left: 1px solid #cacaca;
+        &:last-child {
+          border-left: none;
+          border-right: 1px solid #cacaca;
+          border-left: 1px solid #cacaca;
+        }
+        + .new-quote__row__empty-space {
+          border-left: 1px solid #cacaca;
+        }
+      }
+    }
+  }
+}
+
+.emoji {
+  font-size: 2rem;
+  line-height: 4rem;
+}

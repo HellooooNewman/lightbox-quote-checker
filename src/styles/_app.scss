@@ -1,0 +1,231 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #282c34;
+  font-size: 18px;
+}
+
+:root {
+  --main-color: #09d3ac;
+  --border-radius: 3px;
+}
+
+h1 {
+  font-family: "Pathway Gothic One";
+  text-transform: uppercase;
+  letter-spacing: 10px;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: var(--main-color);
+}
+
+#quotetext {
+  padding: 11px 10px;
+  font-size: 1rem;
+  margin-left: 10px;
+  border: 0;
+  border-radius: 4px 0px 0px 4px;
+}
+
+input[type="submit"] {
+  border: 0;
+  background: var(--main-color);
+  box-shadow: none;
+  border-radius: 0px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  label {
+    margin-top: 15px;
+  }
+}
+
+label {
+  display: flex;
+}
+
+.settings-btn {
+  padding: 5px 13px;
+  border: none;
+  font-size: 1.3rem;
+  background: var(--main-color);
+  margin-left: 10px;
+}
+
+.btn {
+  &--close {
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    right: 13px;
+    width: 23px;
+    top: 40px;
+    height: 23px;
+  }
+}
+
+.react-toggle {
+  display: flex;
+  align-items: center;
+  &-- {
+    &checked {
+      &:hover:not(.react-toggle--disabled) .react-toggle-track,
+      .react-toggle-track {
+        background-color: var(--main-color);
+      }
+
+      .react-toggle-thumb {
+        border-color: var(--main-color);
+        transform: translateX(-49px) translateY(-1px);
+        left: 0;
+      }
+    }
+  }
+
+  &- {
+    &thumb {
+      position: relative;
+      transform: translateX(-25px) translateY(-1px);
+    }
+  }
+
+  li {
+    list-style-type: none;
+  }
+}
+.character-list {
+  display: flex;
+  grid-gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+
+  .character-input {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 140px;
+    margin-bottom: 75px;
+    align-items: center;
+    &-- {
+      &first-character {
+        button[type="button"] {
+          width: 46px;
+          border-radius: 40px;
+          transform: translate(10px, -10px);
+        }
+      }
+    }
+
+    &__ {
+      &title {
+        font-size: 1rem;
+        position: absolute;
+        right: 8px;
+        top: -45px;
+      }
+
+      &count {
+        transform: translateX(5px);
+        &__title {
+          font-size: 1rem;
+        }
+
+        &__input {
+          width: 44px;
+          background: none;
+          border: none;
+          border-bottom: 1px dashed #fff;
+          color: #fff;
+          background: rgba(0, 0, 0, 0.1);
+          transition: 0.3s background ease-in-out;
+          text-align: center;
+          font-size: 2rem;
+        }
+      }
+
+      &character {
+        text-align: center;
+        height: 122px;
+        background: none;
+        border: none;
+        border-bottom: 1px dashed #fff;
+        color: #fff;
+        width: 100%;
+        font-size: 7rem;
+        background: rgba(0, 0, 0, 0.1);
+        transition: 0.3s background ease-in-out;
+        justify-content: center;
+
+        &:focus {
+          background: rgba(0, 0, 0, 0.3);
+        }
+        &::placeholder {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  label {
+    font-size: 7rem;
+    text-align: center;
+    line-height: 7rem;
+  }
+}
+
+.character-list li strong {
+  display: inline-block;
+}
+
+.uppercase {
+  text-transform: uppercase;
+  &::placeholder {
+    text-transform: initial;
+  }
+}
+
+input[type="number"] {
+}
+
+.quote-input {
+  display: flex;
+  justify-content: center;
+}
+
+.form-row {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+@import "_cube.scss";
+@import "_modal.scss";

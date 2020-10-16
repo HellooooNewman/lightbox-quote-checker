@@ -1,13 +1,14 @@
 {
   "name": "lightbox-quote-checker-fe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "http://kevinnewman.ca/lightbox-quote-checker",
   "dependencies": {
+    "grapheme-splitter": "^1.0.4",
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "3.4.3",
     "react-toggle": "^4.1.1"
   },
   "scripts": {

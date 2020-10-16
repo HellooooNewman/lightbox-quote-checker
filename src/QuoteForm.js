@@ -1,6 +1,7 @@
 import React from 'react';
 import { characters, replacementCharacters } from './characters';
 import Toggle from 'react-toggle';
+import GraphemeSplitter from 'grapheme-splitter';
 
 class QuoteForm extends React.Component {
   constructor(props) {
@@ -8,110 +9,235 @@ class QuoteForm extends React.Component {
     this.state = {
       value: 'Create words to live by',
       error: '',
-      newQuote: '',
+      newQuote: [[], [], []],
       characters: characters,
       replacementCharacters: replacementCharacters,
       showCharacters: false,
       showReplacementCharacters: false,
       recommendAlternativeCharacters: true,
-      toggle3D: false,
-      toggleLight: false,
+      toggle3D: true,
+      toggleLight: true,
+      settingsOpen: false,
       rows: 3,
-      maxCharacter: 10,
+      columns: 9,
       newCharacter: '',
       newCharacterCount: 1,
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * Toggle the show characters area
+   */
   toggleShowCharacters = () => {
     this.setState({ showCharacters: !this.state.showCharacters });
   }
 
+  /**
+   * Toggle the show replacement characters area
+   */
   toggleShowReplacementCharacters = () => {
     this.setState({ showReplacementCharacters: !this.state.showReplacementCharacters });
   }
 
+  /**
+   * Toggle the lightbox to go 3D
+   */
   toggle3D = () => {
     this.setState({ toggle3D: !this.state.toggle3D });
   }
 
+  /**
+   * Toggle whether to use alternative characters in the quote
+   */
+  toggleRecommendAlternativeCharacters = () => {
+    this.setState({ recommendAlternativeCharacters: !this.state.recommendAlternativeCharacters });
+  }
+
+  /**
+   * Toggle lightbox light
+   */
   toggleLight = () => {
     this.setState({ toggleLight: !this.state.toggleLight });
   }
 
-  setMaxCharacter = (event) => {
-    this.setState({ maxCharacter: event.target.value });
+  /**
+   * Set the max column amount for the quote box
+   * Max of 20 and min of 0
+   * @param  {Event} event
+   */
+  setMaxColumn = (event) => {
+    if (event.target.value > 0 && event.target.value <= 20) {
+      this.setState({ columns: event.target.value }, () => {
+        this.setQuote();
+      });
+    }
   }
 
+  /**
+   * Set the max row amount for the quote box
+   * Max of 10 and min of 0
+   * @param  {Event} event
+   */
   setRows = (event) => {
-    this.setState({ rows: event.target.value });
+    if (event.target.value > 0 && event.target.value <= 10) {
+      this.setState({ rows: parseInt(event.target.value) }, () => {
+        this.setQuote();
+      });
+    }
   }
 
+  /**
+   * Set a new character for the add character box
+   * Max of 1 character
+   * @param  {Event} event
+   */
   setNewCharcter = (event) => {
-    this.setState({ newCharacter: event.target.value });
+    if (this.fancyCount(event.target.value) <= 1) {
+      this.setState({ newCharacter: event.target.value });
+    }
   }
 
+  /**
+   * Set a new character amount for the add character box
+   * Min of 0
+   * @param  {Event} event
+   */
   setNewCharcterCount = (event) => {
-    this.setState({ newCharacterCount: event.target.value });
-  }
-
-  updateCharacter = (key, value) => {
-    if (value > 0) {
-      this.setState({
-        characters: {
-          ...this.state.characters,
-          [key]: value
-        }
-      })
-    } else {
-      // needs to be more than 0
+    if (event.target.value.length > 0 && event.target.value > 0) {
+      this.setState({ newCharacterCount: event.target.value });
     }
   }
 
+  // https://blog.jonnew.com/posts/poo-dot-length-equals-two
+  // He said not to use it but it seems like the best answer 😕
+  /**
+   * Fancy string counter
+   * Works for most emojis but colored emojis
+   * @param  {string} str
+   */
+  fancyCount(str) {
+    const joiner = "\u{200D}";
+    const split = str.split(joiner);
+    let count = 0;
+
+    for (const s of split) {
+      //removing the variation selectors
+      const num = Array.from(s.split(/[\ufe00-\ufe0f]/).join("")).length;
+      count += num;
+    }
+
+    //assuming the joiners are used appropriately
+    return count / split.length;
+  }
+
+  /**
+   * Update character count for existing characters
+   * @param  {} key key of the character
+   * @param  {} event New amount
+   */
+  setCharacterCount = (key, event) => {
+    if (!isNaN(event.target.value) && event.target.value > 0) {
+      this.setState({
+        characters: {
+          ...this.state.characters,
+          [key]: event.target.value
+        }
+      })
+    }
+  }
+
+  /**
+   * Submit a new character and reset the add character input
+   */
   addNewCharacter = () => {
-    if (this.state.newCharacter.length === 1) {
+    if (this.fancyCount(this.state.newCharacter) === 1 && this.state.newCharacterCount > 0) {
+      let character = this.state.newCharacter.toUpperCase();
       this.setState({
         characters: {
           ...this.state.characters,
-          [this.state.newCharacter]: this.state.newCharacterCount
-        }
+          [character]: this.state.newCharacterCount
+        },
+        newCharacter: '',
+        newCharacterCount: 1,
       })
-    } else {
-      // Either no character or its to long
     }
   }
 
+  /**
+   * Delete character and replacement pairs
+   * @param  {} key key to delete
+   */
   deleteCharacter = (key) => {
     const { [key]: value, ..._characters } = this.state.characters;
+    const { ..._replacementCharacters } = this.state.replacementCharacters;
+
+    // Delete the two keys that connect each other
+    if (_replacementCharacters[_replacementCharacters[key]] && _replacementCharacters[_replacementCharacters[key][0]]) {
+      delete _replacementCharacters[_replacementCharacters[key][0]];
+    }
+
+    if (_replacementCharacters[key]) {
+      delete _replacementCharacters[key];
+    }
+
+    this.setState({
+      replacementCharacters: _replacementCharacters
+    })
+
     this.setState({
       characters: _characters
     })
   }
 
-  handleChange(event) {
+  /**
+   * Set new quote text
+   * @param  {Event} event
+   */
+  setQuoteText = (event) => {
     this.setState({ value: event.target.value });
   }
 
-  handleSubmit(event) {
-    this.setState({ newQuote: this.checkSentence(this.state.value) });
+  /**
+   * Add quote text
+   * @param  {Event} event
+   */
+  handleQuoteSubmit = (event) => {
+    this.setQuote();
     event.preventDefault();
   }
 
+  /**
+   * Check the sentence to see if it works 
+   * if it does set it otherwise add empty rows
+   */
+  setQuote() {
+    const newQuote = this.checkSentence(this.state.value);
+    console.log(newQuote);
+    this.setState({ newQuote: newQuote === '' ? Array(this.state.rows).fill([]) : newQuote });
+  }
+
+  /**
+   * Escape regex string to santize content
+   */
   escapeRegex(string) {
     return string.replace(/[-^$*+?.()|[\]{}]/g, '$&');
   }
 
+  /**
+   * Check to see if the string works with the rows and columns 
+   * if it doesn't return nothing and set an error
+   * @param {string} message Quote that is being passed
+   */
   checkSentence = (message) => {
-    let alteredMessage = "";
+    let alteredMessage = '';
+    let alteredMessageArray = [];
     let errorTemplate = "❌ 🙃 ";
     const _characters = this.state.characters;
     const _replacementCharacters = this.state.replacementCharacters;
 
     if (message === "") {
       this.setState({ error: `${errorTemplate} Please add some text.` });
-      return;
+      return '';
     }
 
     // Check to see if its longer than all available options
@@ -125,7 +251,7 @@ class QuoteForm extends React.Component {
 
     if (!checkLength()) {
       this.setState({ error: `${errorTemplate} Quote is too long.` });
-      return;
+      return '';
     }
 
     // Check to see if there's any random characters that aren't supported
@@ -137,12 +263,12 @@ class QuoteForm extends React.Component {
 
     if (!checkForNotSupportedCharacters()) {
       this.setState({ error: `${errorTemplate} Unsupported characters in quote.` });
-      return;
+      return '';
     }
 
     // Check to see if no word is longer than 10 letters
     const checkForWordLengthFn = () => {
-      const validRegex = new RegExp(`\\S{${this.state.maxCharacter},}`, 'gi');
+      const validRegex = new RegExp(`\\S{${this.state.columns + 1},}`, 'gi');
       return message.match(validRegex);
     }
 
@@ -150,18 +276,22 @@ class QuoteForm extends React.Component {
 
     if (checkForWordLength) {
       this.setState({ error: `${errorTemplate} <strong>"${checkForWordLength[[Object.keys(checkForWordLength)[0]]]}"</strong> is to long for the box.` });
-      return;
+      return '';
+    }
+
+    const addCharacter = (letter) => {
+      alteredMessage += letter;
     }
 
     const checkForEnoughCharacters = () => {
-      let messageLetters = message.toUpperCase().split("");
+      let messageLetters = new GraphemeSplitter().splitGraphemes(message.toUpperCase());
       let charactersUsed = { ..._characters };
       let notEnoughCharacters = [];
       for (let letter of messageLetters) {
         if (charactersUsed[letter] === 0) {
           if (this.state.recommendAlternativeCharacters) {
             if (_replacementCharacters[letter] !== undefined && _replacementCharacters[letter].length !== 0 && charactersUsed[_replacementCharacters[letter][0]] !== 0) {
-              alteredMessage += _replacementCharacters[letter][0];
+              addCharacter(_replacementCharacters[letter][0]);
               charactersUsed[_replacementCharacters[letter][0]]--;
             } else {
               notEnoughCharacters.push(letter);
@@ -173,7 +303,7 @@ class QuoteForm extends React.Component {
           (charactersUsed[letter] && charactersUsed[letter] !== 0) ||
           letter === " "
         ) {
-          alteredMessage += letter;
+          addCharacter(letter);
           charactersUsed[letter]--;
         }
       }
@@ -182,74 +312,106 @@ class QuoteForm extends React.Component {
 
     if (checkForEnoughCharacters().length !== 0) {
       this.setState({ error: `${errorTemplate} You're missing a few characters: Here's a list: <strong>${checkForEnoughCharacters()}</strong>. Please try to be more creative.` });
-      return
+      return '';
     }
 
-    let regexLineBreaks = new RegExp(`/(.{0,${this.state.maxCharacter}}\\b)/gi`);
-    alteredMessage = alteredMessage.replace(regexLineBreaks, '$1\n');
+    // Fix line break thingy
+    let regexLineBreaks = new RegExp(`(.{0,${this.state.columns}}[^\\s]\\b)`, 'gi');
+    alteredMessageArray = alteredMessage.match(regexLineBreaks);
 
-    if (alteredMessage.match(/([\n])+/gi) > this.state.rows) {
-      debugger;
-      this.setState({ error: `${errorTemplate} You have to many line breaks in your message. The box only supports ${this.state.rows} lines.` });
-      return;
+
+    if ((alteredMessageArray.length) > (this.state.rows)) {
+      this.setState({ error: `${errorTemplate} The box only supports ${this.state.rows} lines.` });
+      return '';
+    }
+
+    alteredMessageArray = alteredMessageArray.map(row => row.trim());
+
+    while (alteredMessageArray.length < this.state.rows) {
+      alteredMessageArray.push([]);
     }
 
     this.setState({ error: '' });
-    return alteredMessage;
+    return alteredMessageArray;
+  }
+
+  /**
+   * Toggle the settings modal on
+   */
+  toggleSettings = (state) => {
+    this.setState({ settingsOpen: state });
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Quote Here:
-          <input placeholder="Your quote here" type="text" id="quotetext" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-        <div className="input-toggles">
+      <form onSubmit={this.handleQuoteSubmit}>
+        <div className="quote-input form-row">
           <label>
-            <Toggle
-              defaultChecked={this.state.recommendAlternativeCharacters}
-              icons={false}
-              onChange={this.toggleRecommendAlternativeCharacters} />
-            <span>Use Alternative Characters in Quote ex: E = 3</span>
+            Enter Quote:
+            <input placeholder="Your quote here" type="text" id="quotetext" value={this.state.value} onChange={this.setQuoteText} />
           </label>
-          <label>
-            <Toggle
-              defaultChecked={this.state.toggle3D}
-              icons={false}
-              onChange={this.toggle3D} />
-            <span>Toggle 3D</span>
-          </label>
-          <label>
-            <Toggle
-              defaultChecked={this.state.toggleLight}
-              icons={false}
-              onChange={this.toggleLight} />
-            <span>Toggle Light</span>
-          </label>
-          <label>
-            Max Word Length:
-          <input placeholder="ex: 10" type="number" value={this.state.maxCharacter} onChange={this.setMaxCharacter} />
-          </label>
-          <label>
-            Rows:
-          <input placeholder="ex: 3" type="number" value={this.state.rows} onChange={this.setRows} />
-          </label>
+          <input type="submit" value="Submit" />
+          <button className="settings-btn" onClick={() => this.toggleSettings(true)} type="button"><span aria-label="Open Settings" role="img">⚙️</span></button>
         </div>
-        <div className="error" dangerouslySetInnerHTML={{ __html: this.state.error }}></div>
-        <br></br>
-        <div className="scene scene--cube">
-          <div className={`cube ${this.state.toggle3D ? 'cube--rotate' : ''}`}>
+        {
+          this.state.settingsOpen ?
+            (<div className="modal settings-container">
+              <div className="modal__backdrop" onClick={() => this.toggleSettings(false)}></div>
+              <div className="modal__content ">
+                <button className="modal__close btn--close" onClick={() => this.toggleSettings(false)} type="button" aria-label="Close Settings">X</button>
+                <label>
+                  <Toggle
+                    defaultChecked={this.state.recommendAlternativeCharacters}
+                    icons={false}
+                    onChange={this.toggleRecommendAlternativeCharacters} />
+                  <span>Alternative Characters</span>
+                </label>
+                <label>
+                  <Toggle
+                    defaultChecked={this.state.toggle3D}
+                    icons={false}
+                    onChange={this.toggle3D} />
+                  <span>3D</span>
+                </label>
+                <label>
+                  <Toggle
+                    defaultChecked={this.state.toggleLight}
+                    icons={false}
+                    onChange={this.toggleLight} />
+                  <span>Light</span>
+                </label>
+                <label>
+                  Columns:
+              <input placeholder="ex: 10" type="number" value={this.state.columns} onChange={this.setMaxColumn} />
+                </label>
+                <label>
+                  Rows:
+              <input placeholder="ex: 3" type="number" value={this.state.rows} onChange={this.setRows} />
+                </label>
+              </div>
+            </div>) : null
+        }
+        <div className="error form-row" dangerouslySetInnerHTML={{ __html: this.state.error }}></div>
+        <div className="scene scene--cube form-row">
+          <div style={{ width: this.state.columns * 40, height: this.state.rows * 69 }} className={`cube ${this.state.toggle3D ? 'cube--rotate' : ''}`}>
             <div className={`cube__face cube__face--front ${this.state.toggleLight ? 'cube__face--light-on' : ''}`}>
-              <div className="new-quote" dangerouslySetInnerHTML={{ __html: this.state.newQuote }}></div>
+              <div className="new-quote">
+                {
+                  this.state.newQuote &&
+                  this.state.newQuote.map((quote, index) => (<div key={index} className="new-quote__row">
+                    {
+                      [...quote].map((letter, index) => (<span className={letter !== ' ' ? 'new-quote__row__letter' : 'new-quote__row__empty-space'} key={index} >{letter}</span>))
+                    }
+                  </div>))
+                }
+              </div>
             </div>
             <div className="cube__face cube__face--right"></div>
             <div className="cube__face cube__face--top"></div>
           </div>
         </div>
 
-        <div className="input-toggles">
+        <div className="form-row">
           <label>
             <Toggle
               defaultChecked={this.state.showCharacters}
@@ -257,6 +419,38 @@ class QuoteForm extends React.Component {
               onChange={this.toggleShowCharacters} />
             <span>Show Character List</span>
           </label>
+
+        </div>
+        {
+          this.state.showCharacters ?
+            <div>
+              <p>Count of each character available</p>
+              <div className="character-list">
+                <div className="character-input character-input--first-character">
+                  <div className="character-input__title"><strong>Add new character</strong></div>
+                  <span className="character-input__count">
+                    <input type="number" className="character-input__count__input" value={this.state.newCharacterCount} onChange={(event) => this.setNewCharcterCount(event)} />
+                    <span>x</span>
+                  </span>
+                  <input placeholder="ex: &" type="text" className="uppercase character-input__character" value={this.state.newCharacter} onChange={(event) => this.setNewCharcter(event)} />
+                  <button className="btn--close" onClick={() => this.addNewCharacter()} type="button">Add</button>
+                </div>
+                {Object.entries(this.state.characters).map(([key, value]) => {
+                  return <div className="character-input" key={key}>
+                    <span className="character-input__count">
+                      <input className="character-input__count__input" maxLength={2} name={key} type="number" value={value} onChange={(event) => this.setCharacterCount(key, event)} />
+                      <span>x</span>
+                    </span>
+                    <label htmlFor={key}>{key}</label>
+                    <button className="btn--close" onClick={() => this.deleteCharacter(key)} type="button" aria-label="Delete Character">X</button>
+                  </div>;
+                })}
+              </div>
+            </div>
+            : null
+        }
+
+        <div className="form-row">
           <label>
             <Toggle
               defaultChecked={this.state.showReplacementCharacters}
@@ -264,42 +458,21 @@ class QuoteForm extends React.Component {
               onChange={this.toggleShowReplacementCharacters} />
             <span>Show Alternative Characters List</span>
           </label>
-          {
-            this.state.showCharacters ?
-              <div>
-                <p>Count of each character available</p>
-                <label>
-                  Add new character:
-                  <input placeholder="ex: 🙃" type="text" className="dual-input" value={this.state.newCharacter} onChange={this.setNewCharcter} />
-                  <input placeholder="ex: 1" type="number" className="dual-input" value={this.state.newCharacterCount} onChange={this.setNewCharcterCount} />
-                  <button onClick={() => this.addNewCharacter} type="button">Add</button>
-                </label>
-                <div className="character-list">
-                  {Object.entries(this.state.characters).map(([key, value]) => {
-                    return <label key={key}>
-                      <input placeholder="ex: 🙃" type="text" className="dual-input" value={key} onChange={this.setNewCharcter} />
-                      <input placeholder="ex: 1" type="number" className="dual-input" value={value} onChange={this.setNewCharcterCount} />
-                      <button onClick={() => this.updateCharacter(key, value)} type="button">Save</button>
-                      <button onClick={() => this.deleteCharacter(key)} type="button">Delete</button>
-                    </label>;
-                  })}
-                </div>
-              </div>
-              : null
-          }
-          {
-            this.state.showReplacementCharacters ?
-              <div>
-                <p>List of character replacements for each letter</p>
-                <div className="character-list">
-                  {Object.entries(this.state.replacementCharacters).map(([key, value]) => {
-                    return <li key={key}><strong>{key} =</strong> {value}</li>;
-                  })}
-                </div>
-              </div>
-              : null
-          }
         </div>
+        {
+          this.state.showReplacementCharacters ?
+            <div>
+              <p>List of character replacements for each letter</p>
+              <div className="character-list">
+                {Object.entries(this.state.replacementCharacters).map(([key, value]) => {
+                  return <div key={key} className="character-input">
+                    <div><strong>{key} =</strong> {value}</div>
+                  </div>;
+                })}
+              </div>
+            </div>
+            : null
+        }
       </form>
     );
   }
