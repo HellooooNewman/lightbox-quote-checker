@@ -9,6 +9,7 @@ body {
 
 :root {
   --main-color: #09d3ac;
+  --main-color-dark: #045646;
   --border-radius: 3px;
 }
 
@@ -76,6 +77,34 @@ label {
   font-size: 1.3rem;
   background: var(--main-color);
   margin-left: 10px;
+}
+
+.setting-on {
+  background: var(--main-color-dark);
+}
+
+.horizontal-buttons {
+  display: flex;
+  justify-content: center;
+  &__btns {
+    display: flex;
+    align-items: center;
+    button {
+      margin: 0 10px;
+    }
+  }
+}
+
+.vertical-buttons {
+  transform: translateX(50px);
+  &__container {
+    display: flex;
+    width: 30px;
+    align-items: center;
+    button {
+      margin: 10px 0;
+    }
+  }
 }
 
 .btn {

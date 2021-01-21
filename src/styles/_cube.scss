@@ -40,6 +40,10 @@
   &--rotate {
     transform: rotateY(-22deg) rotateX(-11deg) rotateZ(4deg);
   }
+
+  &--big {
+    transform: scale(2) rotateY(-22deg) rotateX(-11deg) rotateZ(4deg);
+  }
 }
 
 .scene {
