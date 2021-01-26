@@ -362,7 +362,7 @@ class QuoteForm extends React.Component {
             <span aria-label="Toggle 3D" title="Toggle 3D"><strong>3D</strong></span>
           </button>
           <button className={`settings-btn ${this.state.recommendAlternativeCharacters ? '' : 'setting-on'} `} onClick={() => this.toggleRecommendAlternativeCharacters()} type="button">
-            <span aria-label="Toggle Alternative Characters" title="Toggle Alternative Characters" role="img">🔡</span>
+            <span aria-label="Toggle Alternative Characters" title="Toggle Substitute Characters" role="img">🔡</span>
           </button>
           <button className={`settings-btn ${this.state.toggleLight ? '' : 'setting-on'} `} onClick={() => this.toggleLight()} type="button">
             <span aria-label="Toggle Light" title="Toggle Light On or Off" role="img">💡</span>
@@ -382,14 +382,14 @@ class QuoteForm extends React.Component {
 
         <div className="error form-row" dangerouslySetInnerHTML={{ __html: this.state.error }}></div>
         <div className="scene scene--cube form-row">
-          <div style={{ width: this.state.columns * 40 * this.state.size, height: this.state.rows * 69 * this.state.size }} className={`cube${this.state.toggle3D ? ' cube--rotate' : ''}`}>
+          <div style={{ width: this.state.columns * 40 * this.state.size, height: this.state.rows * 69 * this.state.size }} className={`cube${this.state.toggle3D ? ' cube--rotate' : ''}${this.state.size !== 1 ? ' cube--big' : ''}`}>
             <div className={`cube__face cube__face--front ${this.state.toggleLight ? 'cube__face--light-on' : ''}`}>
               <div className="new-quote">
                 {
                   this.state.newQuote &&
                   this.state.newQuote.map((quote, index) => (<div key={index} className="new-quote__row">
                     {
-                      [...quote].map((letter, index) => (<span className={letter !== ' ' ? 'new-quote__row__letter' : 'new-quote__row__empty-space'} key={index} >{letter}</span>))
+                      [...quote].map((letter, index) => (<span style={{ width: this.state.columns * 5 * this.state.size, fontSize: 3.5 * this.state.size + 'rem' }} className={letter !== ' ' ? 'new-quote__row__letter' : 'new-quote__row__empty-space'} key={index} >{letter}</span>))
                     }
                   </div>))
                 }
