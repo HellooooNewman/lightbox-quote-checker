@@ -389,7 +389,7 @@ class QuoteForm extends React.Component {
                   this.state.newQuote &&
                   this.state.newQuote.map((quote, index) => (<div key={index} className="new-quote__row">
                     {
-                      [...quote].map((letter, index) => (<span style={{ width: this.state.columns * 5 * this.state.size, fontSize: 3.5 * this.state.size + 'rem' }} className={letter !== ' ' ? 'new-quote__row__letter' : 'new-quote__row__empty-space'} key={index} >{letter}</span>))
+                      [...quote].map((letter, index) => (<span style={{ width: 40 * this.state.size, fontSize: 3.5 * this.state.size + 'rem' }} className={letter !== ' ' ? 'new-quote__row__letter' : 'new-quote__row__empty-space'} key={index} >{letter}</span>))
                     }
                   </div>))
                 }
