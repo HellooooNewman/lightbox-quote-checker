@@ -22,12 +22,16 @@ class QuoteForm extends React.Component {
       columns: 9,
       newCharacter: '',
       newCharacterCount: 1,
-      toggleBigBox: false,
+      heightColumnCalc: 40,
+      size: 2
     };
   }
 
   componentDidMount() {
     this.setQuote();
+    if (window.innerWidth < 910) {
+      this.setState({ size: 1 })
+    }
   }
 
   /**
@@ -63,13 +67,6 @@ class QuoteForm extends React.Component {
    */
   toggleLight = () => {
     this.setState({ toggleLight: !this.state.toggleLight });
-  }
-
-  /**
-   * Toggle the lightbox to be big or small
-   */
-  toggleBigBox = () => {
-    this.setState({ toggleBigBox: !this.state.toggleBigBox });
   }
 
   /**
@@ -365,30 +362,27 @@ class QuoteForm extends React.Component {
             <span aria-label="Toggle 3D" title="Toggle 3D"><strong>3D</strong></span>
           </button>
           <button className={`settings-btn ${this.state.recommendAlternativeCharacters ? '' : 'setting-on'} `} onClick={() => this.toggleRecommendAlternativeCharacters()} type="button">
-            <span aria-label="Toggle Alternative Characters" title="Toggle Alternative Characters">🔡</span>
+            <span aria-label="Toggle Alternative Characters" title="Toggle Alternative Characters" role="img">🔡</span>
           </button>
           <button className={`settings-btn ${this.state.toggleLight ? '' : 'setting-on'} `} onClick={() => this.toggleLight()} type="button">
-            <span aria-label="Toggle Light" title="Toggle Light On or Off">💡</span>
-          </button>
-          <button className="settings-btn" onClick={() => this.toggleBigBox()} type="button">
-            <span aria-label="Toggle Big Box Size" title="Toggle the size of the lightbox">{this.state.toggleBigBox ? 'Small' : 'Big'}</span>
+            <span aria-label="Toggle Light" title="Toggle Light On or Off" role="img">💡</span>
           </button>
         </div>
         <div className="horizontal-buttons">
           <div className="horizontal-buttons__btns">
             <button onClick={() => this.setMaxColumn(-1)}>
-            -
+              -
             </button>
             Columns
             <button onClick={() => this.setMaxColumn(1)}>
-            +
+              +
             </button>
           </div>
         </div>
-        
+
         <div className="error form-row" dangerouslySetInnerHTML={{ __html: this.state.error }}></div>
         <div className="scene scene--cube form-row">
-          <div style={{ width: this.state.columns * 40, height: this.state.rows * 69 }} className={`cube${this.state.toggle3D ? ' cube--rotate' : ''} ${this.state.toggleBigBox ? ' cube--big' : ''}`}>
+          <div style={{ width: this.state.columns * 40 * this.state.size, height: this.state.rows * 69 * this.state.size }} className={`cube${this.state.toggle3D ? ' cube--rotate' : ''}`}>
             <div className={`cube__face cube__face--front ${this.state.toggleLight ? 'cube__face--light-on' : ''}`}>
               <div className="new-quote">
                 {
@@ -406,12 +400,12 @@ class QuoteForm extends React.Component {
           </div>
           <div className="vertical-buttons__container">
             <div className="vertical-buttons">
-              <button  onClick={() => this.setRows(-1)}>
-              -
+              <button onClick={() => this.setRows(-1)}>
+                -
               </button>
               Rows
               <button onClick={() => this.setRows(1)}>
-              +
+                +
               </button>
             </div>
           </div>

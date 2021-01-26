@@ -12,8 +12,6 @@ function App() {
         </h1>
       </header>
       <QuoteForm />
-      <br></br>
-      <br></br>
       <div className="github-links">
         <a
           className="App-link"

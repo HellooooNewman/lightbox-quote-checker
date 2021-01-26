@@ -5,6 +5,7 @@
 body {
   background-color: #282c34;
   font-size: 18px;
+  padding: 10px;
 }
 
 :root {
@@ -23,17 +24,7 @@ h1 {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
 .App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -44,9 +35,9 @@ h1 {
 #quotetext {
   padding: 11px 10px;
   font-size: 1rem;
-  margin-left: 10px;
   border: 0;
   border-radius: 4px 0px 0px 4px;
+  margin-bottom: 10px;
 }
 
 input[type="submit"] {
@@ -57,6 +48,7 @@ input[type="submit"] {
   padding: 11px;
   font-size: 1rem;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .settings-container {
@@ -77,6 +69,7 @@ label {
   font-size: 1.3rem;
   background: var(--main-color);
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .setting-on {
@@ -248,6 +241,7 @@ input[type="number"] {
 .quote-input {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .form-row {
