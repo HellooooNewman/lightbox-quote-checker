@@ -3,7 +3,7 @@ Tells you whether the message you want to type will work with the letters and le
 
 ![Lightbox](/images/lightbox.jpg)
 
-[Demo here](https://www.kevinnewman.ca/lightbox-quote-checker/)
+[Demo here](https://lightbox-quote-checker-fe-y42cx.ondigitalocean.app/)
 
 Integrates into Slack as a bot [Here](https://github.com/HellooooNewman/Lightbox-Quote-Checker)
 

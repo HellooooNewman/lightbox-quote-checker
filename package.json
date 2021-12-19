@@ -2,7 +2,7 @@
   "name": "lightbox-quote-checker-fe",
   "version": "0.1.1",
   "private": true,
-  "homepage": "http://kevinnewman.ca/lightbox-quote-checker",
+  "homepage": "https://lightbox-quote-checker-fe-y42cx.ondigitalocean.app/",
   "dependencies": {
     "grapheme-splitter": "^1.0.4",
     "node-sass": "^4.13.0",

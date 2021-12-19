@@ -1,6 +1,6 @@
 import React from 'react';
 import { characters, replacementCharacters } from './characters';
-import Toggle from 'react-toggle';
+// import Toggle from 'react-toggle';
 import GraphemeSplitter from 'grapheme-splitter';
 
 class QuoteForm extends React.Component {
