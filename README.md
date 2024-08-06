@@ -3,9 +3,9 @@ Tells you whether the message you want to type will work with the letters and le
 
 ![Lightbox](/images/lightbox.jpg)
 
-[Demo here](https://lightbox-quote-checker-fe-y42cx.ondigitalocean.app/)
+[Demo](https://lightbox-quote-checker-fe-y42cx.ondigitalocean.app/)
 
-Integrates into Slack as a bot [Here](https://github.com/HellooooNewman/lightbox-quote-checker-slackbot)
+[Slackbot](https://github.com/HellooooNewman/lightbox-quote-checker-slackbot)
 
 ## Features:
 - Text alternatives (3 = E)
@@ -42,9 +42,3 @@ Doesn't work
 ``` 
 Unsupported characters in quote.
 ```
-
-## Planned Features:
-- Edit length of rows
-- Edit number of rows
-- Edit character count
-- Changing light color
