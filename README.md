@@ -5,7 +5,7 @@ Tells you whether the message you want to type will work with the letters and le
 
 [Demo here](https://lightbox-quote-checker-fe-y42cx.ondigitalocean.app/)
 
-Integrates into Slack as a bot [Here](https://github.com/HellooooNewman/Lightbox-Quote-Checker)
+Integrates into Slack as a bot [Here](https://github.com/HellooooNewman/lightbox-quote-checker-slackbot)
 
 ## Features:
 - Text alternatives (3 = E)
