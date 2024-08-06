@@ -19,7 +19,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Slack Bot Version
+          Slack Bot
           </a>
         <span> | </span>
         <a
