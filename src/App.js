@@ -15,7 +15,7 @@ function App() {
       <div className="github-links">
         <a
           className="App-link"
-          href="https://github.com/HellooooNewman/Lightbox-Quote-Checker"
+          href="https://github.com/HellooooNewman/lightbox-quote-checker-slackbot"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -24,7 +24,7 @@ function App() {
         <span> | </span>
         <a
           className="App-link"
-          href="https://github.com/HellooooNewman/Lightbox-Quote-Checker-FE/"
+          href="https://github.com/HellooooNewman/lightbox-quote-checker/"
           target="_blank"
           rel="noopener noreferrer"
         >
