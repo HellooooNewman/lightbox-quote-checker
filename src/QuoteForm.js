@@ -23,14 +23,40 @@ class QuoteForm extends React.Component {
       newCharacter: '',
       newCharacterCount: 1,
       heightColumnCalc: 40,
-      size: 2
+      size: 2,
+      typingActive: true, // typing effect active
+      typingPlaceholder: '', // placeholder for typing effect
+      typingIndex: 0, // moved from instance variable
+      typingCharIndex: 0, // moved from instance variable
+      backspacing: false, // backspacing effect active
     };
+    this.typingPhrases = [
+      'Create words to live by',
+      'Make your own quote',
+      'Express yourself',
+    ];
+    this.typingTimeout = null;
   }
 
   componentDidMount() {
     this.setQuote();
     if (window.innerWidth < 910) {
       this.setState({ size: 1 })
+    }
+    this.startTypingEffect();
+    document.addEventListener('mousedown', this.handleGlobalClick);
+  }
+
+  componentWillUnmount() {
+    if (this.typingTimeout) clearTimeout(this.typingTimeout);
+    document.removeEventListener('mousedown', this.handleGlobalClick);
+  }
+
+  handleGlobalClick = (event) => {
+    // Only stop if typing is active
+    if (this.state.typingActive) {
+      this.setState({ typingActive: false, value: '' }, () => this.setQuote());
+      if (this.typingTimeout) clearTimeout(this.typingTimeout);
     }
   }
 
@@ -203,7 +229,8 @@ class QuoteForm extends React.Component {
    * @param  {Event} event
    */
   setQuoteText = (event) => {
-    this.setState({ value: event.target.value });
+    this.stopTypingEffect();
+    this.setState({ value: event.target.value }, () => this.setQuote());
   }
 
   /**
@@ -350,12 +377,82 @@ class QuoteForm extends React.Component {
     this.setState({ settingsOpen: state });
   }
 
+  startTypingEffect = () => {
+    if (!this.state.typingActive) return;
+    const phrase = this.typingPhrases[this.state.typingIndex];
+    // Typing forward
+    if (this.state.typingCharIndex <= phrase.length && !this.state.backspacing) {
+      const currentText = phrase.slice(0, this.state.typingCharIndex);
+      this.setState(
+        prevState => ({
+          typingPlaceholder: currentText,
+          typingCharIndex: prevState.typingCharIndex + 1,
+          value: currentText,
+          backspacing: false
+        }),
+        () => {
+          this.setQuote();
+          this.typingTimeout = setTimeout(this.startTypingEffect, 80);
+        }
+      );
+    } else if (this.state.typingCharIndex > phrase.length && !this.state.backspacing) {
+      // Pause before backspacing
+      this.typingTimeout = setTimeout(() => {
+        this.setState({ backspacing: true }, this.startTypingEffect);
+      }, 1200);
+    } else if (this.state.backspacing && this.state.typingCharIndex > 0) {
+      // Backspacing
+      const currentText = phrase.slice(0, this.state.typingCharIndex - 1);
+      this.setState(
+        prevState => ({
+          typingPlaceholder: currentText,
+          typingCharIndex: prevState.typingCharIndex - 1,
+          value: currentText
+        }),
+        () => {
+          this.setQuote();
+          this.typingTimeout = setTimeout(this.startTypingEffect, 40);
+        }
+      );
+    } else if (this.state.backspacing && this.state.typingCharIndex === 0) {
+      // Move to next phrase
+      this.typingTimeout = setTimeout(() => {
+        this.setState(
+          prevState => ({
+            typingIndex: (prevState.typingIndex + 1) % this.typingPhrases.length,
+            typingCharIndex: 0,
+            value: '',
+            backspacing: false
+          }),
+          () => {
+            this.setQuote();
+            this.startTypingEffect();
+          }
+        );
+      }, 400);
+    }
+  }
+
+  stopTypingEffect = () => {
+    if (this.state.typingActive) {
+      this.setState({ typingActive: false });
+      if (this.typingTimeout) clearTimeout(this.typingTimeout);
+    }
+  }
+
   render() {
     return (
       <form onSubmit={this.handleQuoteSubmit}>
         <div className="quote-input form-row">
           <label>
-            <input placeholder="Your quote here" type="text" id="quotetext" value={this.state.value} onChange={this.setQuoteText} />
+            <input
+              placeholder={this.state.typingActive ? this.state.typingPlaceholder : 'Your quote here'}
+              type="text"
+              id="quotetext"
+              value={this.state.value}
+              onChange={this.setQuoteText}
+              onFocus={this.stopTypingEffect}
+            />
           </label>
           <input type="submit" value="Submit" />
           <button className={`settings-btn ${this.state.toggle3D ? '' : 'setting-on'} `} onClick={() => this.toggle3D()} type="button">
